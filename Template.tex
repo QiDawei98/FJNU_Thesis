@@ -1,0 +1,242 @@
+\documentclass[a4paper,zihao=-4,twoside,openany,fontset=none]{ctexbook}
+
+% ==============================================================================
+% 1. 页面布局与间距设置 (Page Geometry & Layout)
+% ==============================================================================
+\usepackage[
+    top=3cm,
+    bottom=3cm,
+    left=2.9cm,
+    right=2.8cm,
+    headheight=15pt,
+    headsep=1.5cm
+]{geometry}
+
+\usepackage{setspace}
+
+% ==============================================================================
+% 2. 字体配置核心区 (Font Configurations via fontspec)
+% ==============================================================================
+% 仅加载数学公式的 Times 风格宏包，切勿加载 newtxtext 避免与下面的本地字体冲突
+\usepackage{newtxmath}
+
+% --- 2.1 西文字体配置 (TeX Gyre Termes 完美替代 Times New Roman) ---
+\setmainfont{texgyretermes.otf}[
+    Path           = fonts/,
+    BoldFont       = texgyretermes-bold.otf,
+    ItalicFont     = texgyretermes-italic.otf,
+    BoldItalicFont = texgyretermes-bolditalic.otf
+]
+
+% --- 2.2 全局默认中文字体 (Roman族 / 宋体) ---
+\setCJKmainfont{SourceHanSerifSC-Regular.otf}[
+    Path       = fonts/,
+    BoldFont   = SourceHanSerifSC-Bold.otf,   % 显式指定真正加粗的宋体，杜绝系统伪粗体
+    ItalicFont = LXGWWenKai-Regular.ttf     % 将中文斜体优雅地映射为楷体
+]
+
+% --- 2.3 无衬线与等宽中文字体 (Sans & Mono族，常用于图表说明或代码块) ---
+\setCJKsansfont{SourceHanSansSC-Regular.otf}[
+    Path     = fonts/,
+    BoldFont = SourceHanSansSC-Bold.otf
+]
+\setCJKmonofont{SourceHanSansSC-Regular.otf}[
+    Path     = fonts/
+]
+
+% --- 2.4 局部手动调用字体族声明 (面向命令式排版需求) ---
+\setCJKfamilyfont{songti}{SourceHanSerifSC-Regular.otf}[
+    Path     = fonts/, 
+    BoldFont = SourceHanSerifSC-Bold.otf
+]
+\newcommand{\songti}{\CJKfamily{songti}}
+
+\setCJKfamilyfont{heiti}{SourceHanSansSC-Regular.otf}[
+    Path     = fonts/, 
+    BoldFont = SourceHanSansSC-Bold.otf
+]
+\newcommand{\heiti}{\CJKfamily{heiti}}
+
+\setCJKfamilyfont{kaishu}{LXGWWenKai-Regular.ttf}[
+    Path     = fonts/
+]
+\newcommand{\kaishu}{\CJKfamily{kaishu}}
+
+% ==============================================================================
+% 3. 标题与目录格式设置 (Titles & Table of Contents)
+% ==============================================================================
+\ctexset{
+    chapter = {
+        name = {第,章},
+        number = \arabic{chapter},
+        format = \zihao{-2}\songti\bfseries\centering, % 小二号宋体加粗居中
+        beforeskip = 12pt,
+        afterskip = 20pt,
+        pagestyle = fancy
+    },
+    section = {
+        format = \zihao{-3}\songti\bfseries\centering, % 小三号宋体加粗居中
+    },
+    subsection = {
+        format = \zihao{4}\songti\bfseries,             % 四号宋体加粗
+    },
+    subsubsection = {
+        format = \zihao{-4}\songti\bfseries,            % 小四号宋体加粗
+    }
+}
+
+\usepackage{tocloft}
+\tocloftpagestyle{fancy}
+% 目录大标题精细化排版
+\renewcommand{\cfttoctitlefont}{\hfill\zihao{-2}\songti\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill}
+% 目录条目与引导连点器格式
+\renewcommand{\cftchapfont}{\zihao{-4}\songti\bfseries}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftchappagefont}{\zihao{-4}\bfseries}
+\renewcommand{\cftsecfont}{\zihao{-4}\songti\bfseries}
+\renewcommand{\cftsecpagefont}{\zihao{-4}\bfseries}
+\renewcommand{\cftsubsecfont}{\zihao{-4}\songti\bfseries}
+\renewcommand{\cftsubsecpagefont}{\zihao{-4}\bfseries}
+
+% ==============================================================================
+% 4. 页眉页脚设置 (Header & Footer Styles)
+% ==============================================================================
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[CO]{\zihao{5} \leftmark}
+\fancyhead[CE]{\zihao{5} 帕多瓦大学伽利略硕士学位论文}
+\fancyfoot[C]{\zihao{-5} \thepage}
+
+% 精准绘制双实线页眉
+\renewcommand{\headrulewidth}{0pt}
+\makeatletter
+\def\headrule{%
+  \hrule height 0.5pt width \headwidth
+  \vskip 1pt
+  \hrule height 0.5pt width \headwidth
+  \vskip -2pt
+}
+\makeatother
+
+% ==============================================================================
+% 5. 参考文献设置 (Bibliography Preferences via BibLaTeX)
+% ==============================================================================
+\usepackage[style=gb7714-2015, backend=biber]{biblatex}
+\addbibresource{reference.bib}
+
+% ==============================================================================
+% 正文主区开始 (Main Document)
+% ==============================================================================
+\begin{document}
+
+% 遵照硬性指标：恢复绝对行高设置
+\setlength{\baselineskip}{22pt}
+
+% ------------------------------------------------------------------------------
+% 前言部分 (Front Matter: 摘要、目录)
+% ------------------------------------------------------------------------------
+\frontmatter
+\pagenumbering{Roman} % 遵照硬性指标：显式声明前言页码样式
+
+\chapter*{摘要}
+\markboth{摘要}{摘要}
+\addcontentsline{toc}{chapter}{摘要}
+
+本文是一篇关于自由落体运动规律与木星卫星观测的研究论文。摘要内容不宜使用公式、图表及参考文献及序号。字数一般不少于500字。
+
+\vspace{1em}
+\noindent\textbf{关键词：}经典力学；天文观测；相对性原理
+
+\clearpage
+
+\chapter*{\textbf{Abstract}}
+\markboth{Abstract}{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This is the English abstract. It reflects the essence of the dissertation and summarizes the research objectives, main contents, methodologies, and conclusions.
+
+\vspace{1em}
+\noindent\textbf{Keywords: } Classical Mechanics; Astronomical Observation; Principle of Relativity
+
+\clearpage
+
+\tableofcontents
+\addcontentsline{toc}{chapter}{目录}
+\clearpage
+
+% ------------------------------------------------------------------------------
+% 正文部分 (Main Matter: 绪论、具体章节)
+% ------------------------------------------------------------------------------
+\mainmatter
+\pagenumbering{arabic} % 遵照硬性指标：显式声明正文页码样式
+
+\chapter{绪论}
+这里是第一章的内容，主要回答“为什么研究”这个问题。包含与学位论文有关的重要文献资料综述，理论分析依据、研究设想等。
+
+\section{研究背景及意义}
+\subsection{理论研究背景}
+这是条标题（Subsection）的示例，现在的格式是真正的四号宋体加粗。正文部分统一为小四号宋体，行距为22磅。虽然我们在探讨惯性参考系时主要依赖比萨斜塔实验，但正如后世的爱因斯坦在其划时代论文中所指出的那样\cite{einstein1905}，时间和空间的相对性以及光速的不变性，为我们彻底摒弃亚里士多德的绝对静止观提供了终极的理论支撑——这无疑证明了本论文在经典力学开创上的前瞻性。当你使用 \textbf{加粗指令} 时，系统会平滑调用思源宋体粗体（SourceHanSerifSC-Bold）；当你使用 \textit{斜体指令} 时，会自动调用霞鹜文楷。
+
+\subsection{国内外研究现状}
+正文要求思路清晰，合乎逻辑。这里可以引用你用星盘和改良望远镜开发的观测记录工具。
+
+\section{本文的主要研究内容}
+简述本文各章节的安排。
+
+\chapter{木星卫星的观测与分析}
+
+本章主要记录1610年初使用改良型望远镜对木星及其伴星的观测数据。详细的推导与轨道周期拟合过程请参见后续附录。
+
+\section{观测方法}
+简述望远镜参数及观测环境。
+
+\section{初步结论}
+列出四颗卫星的大致运动规律。
+
+
+% ------------------------------------------------------------------------------
+% 尾部附件 (Back Matter: 附录、科研成果、致谢)
+% ------------------------------------------------------------------------------
+\backmatter
+
+\chapter*{附录}
+\markboth{附录}{附录}
+\addcontentsline{toc}{chapter}{附录}
+
+这里放置附加数据、公式推导或程序代码（如望远镜透镜曲率计算或行星轨道拟合的核心算法逻辑）。
+
+\clearpage
+
+\printbibliography[heading=bibintoc, title=参考文献]
+\clearpage
+
+% 后续特定部分按学校规范清除页码
+\fancyfoot[C]{} 
+
+\chapter*{攻读学位期间承担的科研任务与主要成果}
+\markboth{攻读学位期间承担的科研任务与主要成果}{攻读学位期间承担的科研任务与主要成果}
+\addcontentsline{toc}{chapter}{攻读学位期间承担的科研任务与主要成果}
+
+\noindent\textbf{一、发表的学术论文}
+\begin{enumerate}
+    \item \textbf{Galilei, G.}, et al. "Sidereus Nuncius (Starry Messenger)." \textit{Venice University Press}, 1610.
+\end{enumerate}
+
+\vspace{1em}
+\noindent\textbf{二、设计的实验仪器}
+\begin{enumerate}
+    \item 改良型折射式天文望远镜（基于透镜曲率几何优化设计）。
+    \item 自由落体斜面实验测速与等时性测量装置。
+\end{enumerate}
+
+\clearpage
+
+\chapter*{致谢}
+\markboth{致谢}{致谢}
+\addcontentsline{toc}{chapter}{致谢}
+
+感谢导师在学术研究方向上的悉心指导。感谢帕多瓦大学的同僚们在望远镜计算调试及观测数据比对过程中提供的帮助与讨论。
+
+\end{document}
