@@ -12,4 +12,6 @@
 本文档所使用的字体完全开源，由版权所有者使用OFL1.1协议发布。
 字体下载自：[https://github.com/lxgw/LxgwWenKai](https://github.com/lxgw/LxgwWenKai)和[https://github.com/MatNoble/Fonts](https://github.com/MatNoble/Fonts)
 
+请使用XeLaTeX-Bider-XeLaTeX-XeLaTeX的顺序编译。
+
 此外，本科的同学欢迎关注BY-H同学的项目[https://github.com/BY-H/Fujian-Normal-University-paper-LaTeX-template](https://github.com/BY-H/Fujian-Normal-University-paper-LaTeX-template)
